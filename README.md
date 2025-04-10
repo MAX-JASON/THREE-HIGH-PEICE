@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>三高危機與保險解決方案 - 國泰人壽</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
     <style>
@@ -11,64 +11,70 @@
             font-family: 'Noto Sans TC', sans-serif;
             line-height: 1.8;
             margin: 0;
-            padding: 30px;
+            padding: 15px;
             background-color: #f0f4f8;
             color: #2d3748;
         }
         h1 {
             color: #c53030;
             text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 30px;
+            font-size: 2.2em;
+            margin-bottom: 20px;
         }
         h2 {
             color: #2b6cb0;
-            font-size: 1.8em;
-            margin-top: 40px;
+            font-size: 1.6em;
+            margin-top: 30px;
             text-align: center;
         }
         h3 {
             color: #4a5568;
-            font-size: 1.4em;
-            margin: 20px 0;
+            font-size: 1.3em;
+            margin: 15px 0;
+            clear: both;
         }
         .container {
-            max-width: 1300px;
+            max-width: 1024px;
             margin: 0 auto;
         }
         .section {
             background-color: #ffffff;
-            padding: 40px;
-            margin: 30px 0;
+            padding: 25px;
+            margin: 25px 0;
             border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            clear: both;
         }
         .chart-container {
             position: relative;
-            height: 450px;
+            height: 300px;
             width: 100%;
-            margin: 30px 0;
+            margin: 20px 0 30px 0;
+            clear: both;
         }
         .highlight {
             background-color: #fefcbf;
-            padding: 20px;
+            padding: 15px;
             border-left: 6px solid #dd6b20;
-            margin: 20px 0;
+            margin: 15px 0;
             font-weight: bold;
             color: #744210;
+            clear: both;
         }
         .cta-button {
             background-color: #38a169;
             color: white;
-            padding: 18px 40px;
+            padding: 16px 32px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
             display: block;
-            margin: 40px auto;
+            margin: 30px auto;
             text-align: center;
             text-decoration: none;
+            width: 80%;
+            max-width: 400px;
         }
         .cta-button:hover {
             background-color: #2f855a;
@@ -77,19 +83,67 @@
             text-align: center;
             font-size: 14px;
             color: #718096;
-            margin-top: 60px;
+            margin-top: 40px;
             padding: 20px;
             background-color: #edf2f7;
             border-radius: 8px;
+            clear: both;
         }
-        /* 響應式設計 */
-        @media (max-width: 768px) {
-            .chart-container {
-                height: 350px;
+        
+        /* iPad 優化 */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            body {
+                padding: 20px;
+                font-size: 16px;
             }
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.5em; }
+            h1 { 
+                font-size: 2em;
+                margin-bottom: 25px;
+            }
+            h2 { 
+                font-size: 1.5em;
+                margin-top: 30px;
+            }
+            h3 {
+                font-size: 1.2em;
+                margin-top: 25px;
+            }
+            .section { 
+                padding: 25px;
+                margin: 20px 0;
+            }
+            .chart-container {
+                height: 280px;
+                margin: 25px 0 30px 0;
+            }
+            .highlight {
+                margin: 20px 0;
+            }
+            ul {
+                padding-left: 25px;
+            }
+        }
+        
+        /* 手機優化 */
+        @media (max-width: 767px) {
+            .chart-container {
+                height: 250px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.4em; }
             .section { padding: 20px; }
+        }
+        
+        /* 雙列圖表布局 (僅適用於較大螢幕) */
+        @media (min-width: 1025px) {
+            .chart-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+            }
+            .chart-column {
+                width: 48%;
+            }
         }
     </style>
 </head>
@@ -215,6 +269,23 @@
     <!-- Chart.js 腳本 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <script>
+        // 設定圖表響應選項
+        const chartResponsiveOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { 
+                    position: 'top',
+                    labels: { 
+                        boxWidth: 12,
+                        padding: 10,
+                        font: { size: 11 }
+                    } 
+                } 
+            },
+            animation: { duration: 1000 }
+        };
+        
         // 圖表1：柱狀圖 - 年齡與併發症機率
         const barCtx = document.getElementById('barChart').getContext('2d');
         const barChart = new Chart(barCtx, {
@@ -229,9 +300,15 @@
                 }]
             },
             options: {
-                animation: { duration: 1500 },
-                scales: { y: { beginAtZero: true, max: 100 } },
-                plugins: { legend: { position: 'top' } }
+                ...chartResponsiveOptions,
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        max: 100,
+                        ticks: { font: { size: 11 } }
+                    },
+                    x: { ticks: { font: { size: 11 } } }
+                }
             }
         });
 
@@ -251,8 +328,14 @@
                 }]
             },
             options: {
-                animation: { duration: 1500 },
-                scales: { y: { beginAtZero: true } }
+                ...chartResponsiveOptions,
+                scales: { 
+                    y: { 
+                        beginAtZero: true,
+                        ticks: { font: { size: 11 } }
+                    },
+                    x: { ticks: { font: { size: 10 } } }
+                }
             }
         });
 
@@ -265,10 +348,10 @@
                 datasets: [{
                     data: [45, 20, 15, 10, 10],
                     backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff'],
-                    borderWidth: 2
+                    borderWidth: 1
                 }]
             },
-            options: { animation: { duration: 1500 } }
+            options: chartResponsiveOptions
         });
 
         // 圖表4：區域圖 - 地區醫療花費
@@ -287,8 +370,14 @@
                 }]
             },
             options: {
-                animation: { duration: 1500 },
-                scales: { y: { beginAtZero: true } }
+                ...chartResponsiveOptions,
+                scales: { 
+                    y: { 
+                        beginAtZero: true,
+                        ticks: { font: { size: 11 } }
+                    },
+                    x: { ticks: { font: { size: 11 } } }
+                }
             }
         });
 
@@ -308,10 +397,25 @@
                 }]
             },
             options: {
-                animation: { duration: 1500 },
+                ...chartResponsiveOptions,
                 scales: {
-                    x: { title: { display: true, text: '控制程度 (1-5)' } },
-                    y: { title: { display: true, text: '併發症機率 (%)' }, max: 100 }
+                    x: { 
+                        title: { 
+                            display: true, 
+                            text: '控制程度 (1-5)',
+                            font: { size: 11 }
+                        },
+                        ticks: { font: { size: 10 } }
+                    },
+                    y: { 
+                        title: { 
+                            display: true, 
+                            text: '併發症機率 (%)',
+                            font: { size: 11 }
+                        },
+                        max: 100,
+                        ticks: { font: { size: 10 } }
+                    }
                 }
             }
         });
@@ -330,9 +434,26 @@
                 }]
             },
             options: {
-                animation: { duration: 1500 },
-                scales: { y: { beginAtZero: true, max: 50 } }
+                ...chartResponsiveOptions,
+                scales: { 
+                    y: { 
+                        beginAtZero: true, 
+                        max: 50,
+                        ticks: { font: { size: 11 } }
+                    },
+                    x: { ticks: { font: { size: 11 } } }
+                }
             }
+        });
+        
+        // 確保圖表在視窗大小改變時重新調整
+        window.addEventListener('resize', function() {
+            barChart.resize();
+            lineChart.resize();
+            pieChart.resize();
+            areaChart.resize();
+            scatterChart.resize();
+            heatMap.resize();
         });
     </script>
 </body>
